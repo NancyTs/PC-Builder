@@ -1,0 +1,36 @@
+<% if user_signed_in? %>
+<h1>Computers</h1>
+
+<table class="table table-striped table-hover">
+  <thead class = "table-dark">
+    <tr>
+      <th>Motherboard</th>
+      <th>Cpu</th>
+      <th>Gpu</th>
+      <th>User</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @computers.each do |computer| %>
+      <tr>
+        <td><%= computer.motherboard %></td>
+        <td><%= computer.cpu %></td>
+        <td><%= computer.gpu %></td>
+        <td><%= computer.user_id %></td>
+        <td><%= link_to 'Show', computer %></td>
+        <td><%= link_to 'Edit', edit_computer_path(computer) %></td>
+        <td><%= link_to 'Destroy', computer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Computer',  new_computer_path , class:"btn btn-dark" %>
+<% else %>
+
+<h1>Hello World!</h1>
+<%end%>

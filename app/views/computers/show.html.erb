@@ -1,0 +1,20 @@
+<div class="bg-light p-5 rounded-lg m-3">
+<p>
+  <strong>Motherboard:</strong>
+  <%= @computer.motherboard %>
+</p>
+
+<p>
+  <strong>Cpu:</strong>
+  <%= @computer.cpu %>
+</p>
+
+<p>
+  <strong>Gpu:</strong>
+  <%= @computer.gpu %>
+</p>
+
+<%= link_to 'Edit', edit_computer_path(@computer),   class:"btn btn-dark" %>
+<%= link_to 'Back', computers_path,   class:"btn btn-secondary" %>
+
+</div>
