@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
+
+
   def index
+    @skills = ["h270","gtx 1060","other pc"]
   end
 
   def about
