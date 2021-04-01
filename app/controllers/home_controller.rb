@@ -1,26 +1,26 @@
 class HomeController < ApplicationController
 
+  require "json"
 
   def index
-    @skills = ["h270","gtx 1060","other pc"]
   end
 
   def about
   end
 
+  def autocomplete
 
-  def search
-    parts = find_part(params[:part])
+    file = File.open "response.json"
+    response = JSON.load file
+    #response = find_part(params[:input])
+    puts params[:input]
+    puts params[:type]
 
-    unless parts
-      flash[:notice] = 'Part not found'
-      return render action: :index
-    end
+    parts = [response["items"]["title"]]
+    #parts = response["items"].map { |i| i["title"] }
 
-    @part = parts['items']
+    render json: parts
   end
-
-  private
 
   def find_part(name)
     request_api(
@@ -38,7 +38,7 @@ class HomeController < ApplicationController
 
     return nil if response.status != 200
 
-    JSON.parse(response.body)
+    response.body
   end
 
 end

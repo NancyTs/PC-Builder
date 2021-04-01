@@ -1,24 +1,32 @@
 import 'js-autocomplete/auto-complete.css';
 import autocomplete from 'js-autocomplete';
 
-const autocompleteSearch = function() {
-  const skills = JSON.parse(document.getElementById('search-data').dataset.skills)
-  const searchInput = document.getElementById('q');
+document.addEventListener('focusin', function() {
+  console.log("here")
+  const active = document.activeElement;
+  if(active.classList.contains("autocompleted")){
 
-  if (skills && searchInput) {
-    new autocomplete({
-      selector: searchInput,
-      minChars: 1,
-      source: function(term, suggest){
-          term = term.toLowerCase();
-          const choices = skills;
-          const matches = [];
-          for (let i = 0; i < choices.length; i++)
-              if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
-          suggest(matches);
+    if(active){
+      var xhr;
+      new autocomplete({
+        selector: active,
+        minChars: 3,
+        source: function(term, suggest){
+          try { xhr.abort(); } catch(e){}
+          xhr = $.getJSON('/autocomplete',
+            { input: term, type: active.id },
+            function(data) {
+              return data;
+          }).then((data) => {
+            suggest(data);
+        })
       },
-    });
+      onSelect: function(e, term, item){
+      console.log("before" + active.value);
+        active.value = item.getAttribute('data-val');
+        console.log("after" + active.value);
+        }
+    })
   }
-};
-
-autocompleteSearch();
+  }
+}, true);
