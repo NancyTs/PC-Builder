@@ -1,7 +1,5 @@
 class HomeController < ApplicationController
 
-  require "json"
-
   def index
   end
 
@@ -9,22 +7,15 @@ class HomeController < ApplicationController
   end
 
   def autocomplete
-
-    file = File.open "response.json"
-    response = JSON.load file
-    #response = find_part(params[:input])
-    puts params[:input]
-    puts params[:type]
-
+    response = find_part(params[:input],params[:type])
     parts = [response["items"]["title"]]
-    #parts = response["items"].map { |i| i["title"] }
 
     render json: parts
   end
 
-  def find_part(name)
+  def find_part(name, type)
     request_api(
-      "https://api.apigenius.io/products/search?keyword=#{URI.encode(name)}"
+      "https://api.apigenius.io/products/search?keyword=#{URI.encode(name)}&title=#{URI.encode(type)}"
     )
   end
 
@@ -38,7 +29,7 @@ class HomeController < ApplicationController
 
     return nil if response.status != 200
 
-    response.body
+    JSON.parse(response.body)
   end
 
 end
